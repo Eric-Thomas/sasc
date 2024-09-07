@@ -16,7 +16,7 @@ class SpotifyClient:
     DEFAULT_TIMEOUT = 10
 
     def __init__(self, refresh_token: str) -> None:
-        self.oauth_token = self._get_oauth_token(refresh_token)
+        self.access_token = self._get_access_token(refresh_token)
 
     def get_liked_songs(self) -> None:
         """Gets a users saved songs"""
@@ -26,8 +26,8 @@ class SpotifyClient:
         """Creates a spotify playlist with name :param: name"""
         raise NotImplementedError
 
-    def _get_oauth_token(self, refresh_token: str) -> str:
-        """Get spotify oauth token"""
+    def _get_access_token(self, refresh_token: str) -> str:
+        """Get Spotify access token"""
         payload = {
             "grant_type": "refresh_token",
             "refresh_token": refresh_token,
