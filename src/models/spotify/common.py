@@ -1,4 +1,5 @@
 """Pydantic models for commmon Spotify objects"""
+
 from enum import Enum
 
 from pydantic import BaseModel
@@ -30,11 +31,3 @@ class ExternalUrls(BaseModel):
     """External Urls Spotify object"""
 
     spotify: str
-
-
-class ExternalIds(BaseModel):
-    """External Ids Spotify object"""
-
-    isrc: str
-    ean: str
-    upc: str

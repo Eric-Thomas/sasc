@@ -1,4 +1,5 @@
 """Pydantic models for Spotify Album objects"""
+
 from enum import Enum
 from typing import List, Optional
 
@@ -12,7 +13,7 @@ class AlbumType(str, Enum):
 
     album = "album"  # pylint: disable=invalid-name
     single = "single"  # pylint: disable=invalid-name
-    compilation = "compliation"  # pylint: disable=invalid-name
+    compilation = "compilation"  # pylint: disable=invalid-name
 
 
 class Album(Item):
@@ -20,10 +21,10 @@ class Album(Item):
 
     album_type: AlbumType
     total_tracks: int
-    available_markets: Optional[List[str]]
+    available_markets: Optional[List[str]] = None
     external_urls: ExternalUrls
     images: List[Image]
     name: str
     release_date: str
     release_date_precision: ReleaseDatePrecision
-    restrictions: Restrictions
+    restrictions: Optional[Restrictions] = None
