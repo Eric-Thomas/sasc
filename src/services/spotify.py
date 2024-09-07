@@ -7,6 +7,7 @@ from http import HTTPStatus
 import requests
 
 from src.exceptions.spotify import SpotifyAuthTokenException
+from src.models.spotify.response import AccessToken
 
 
 class SpotifyClient:
@@ -52,4 +53,5 @@ class SpotifyClient:
                 f"Error getting Spotify auth token: {resp.json()}"
             )
 
-        return resp.json()["access_token"]
+        resp = AccessToken(**resp.json())
+        return resp.access_token
