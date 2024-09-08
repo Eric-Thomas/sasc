@@ -13,13 +13,16 @@ from src.models.spotify.response import (
     PaginatedSavedTracksResponse,
 )
 from src.models.spotify.track import SavedTrack
+from src.models.spotify.user import User
 
 
 class SpotifyClient:
     """Client to interact with Spotify Web API"""
 
-    SPOTIFY_AUTH_TOKEN_URL = "https://accounts.spotify.com/api/token"
-    SPOTIFY_USERS_TRACKS_URL = "https://api.spotify.com/v1/me/tracks?limit=50"
+    AUTH_TOKEN_URL = "https://accounts.spotify.com/api/token"
+    USERS_TRACKS_URL = "https://api.spotify.com/v1/me/tracks?limit=50"
+    CREATE_PLAYLIST_URL = "https://api.spotify.com/v1/users/{}/playlists"
+    CURRENT_USER_PROFILE_URL = "https://api.spotify.com/v1/me"
     DEFAULT_TIMEOUT = 10
 
     def __init__(self, refresh_token: str) -> None:
@@ -51,12 +54,27 @@ class SpotifyClient:
     def get_liked_songs(self) -> List[SavedTrack]:
         """Gets a users saved songs"""
         return self._get_all_paginated_liked_songs(
-            SpotifyClient.SPOTIFY_USERS_TRACKS_URL
+            SpotifyClient.USERS_TRACKS_URL
         )
 
-    def create_playlist(self, name: str) -> None:
-        """Creates a spotify playlist with name :param: name"""
-        raise NotImplementedError
+    def create_playlist_and_add_songs(self, name: str, uris: List[str]) -> None:
+        """Creates a spotify playlist with name :param: name
+        Adds all :param: uris to playlist"""
+        resp = requests.post(
+
+        )
+
+    def get_user_profile(self) -> User:
+        resp = requests.get(
+            url = SpotifyClient.CURRENT_USER_PROFILE_URL,
+            headers=self.headers,
+            timeout=SpotifyClient.DEFAULT_TIMEOUT
+        )
+
+        if resp.status_code != HTTPStatus.OK:
+            raise SpotifyApiException(f"Error calling Spotify Api: {resp.json()}")
+        
+        return User(**resp.json())
 
     def _get_access_token(self, refresh_token: str) -> str:
         """Get Spotify access token"""
@@ -73,7 +91,7 @@ class SpotifyClient:
         }
 
         resp = requests.post(
-            url=SpotifyClient.SPOTIFY_AUTH_TOKEN_URL,
+            url=SpotifyClient.AUTH_TOKEN_URL,
             headers=headers,
             data=payload,
             timeout=SpotifyClient.DEFAULT_TIMEOUT,
